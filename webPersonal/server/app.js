@@ -2,12 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const {API_VERSION}= require('./config');
+const { API_VERSION } = require("./config");
 
-//Load Routings 
+//Load Routings
 //...
+const userRouters = require("./routers/user");
 
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Configure Header HTTP
@@ -15,5 +16,6 @@ app.use(bodyParser.json());
 
 //Router Basic
 //...
+app.use(`/api/${API_VERSION}`, userRouters);
 
 module.exports = app;
