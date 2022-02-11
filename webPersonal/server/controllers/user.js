@@ -1,16 +1,15 @@
 const bcrypt = require("bcrypt-nodejs");
-const { Model } = require("mongoose");
 
 const User = require("../models/user");
 const { use } = require("../routers/user");
 
 function signUp(req, res) {
-  console.log("EndPoint de Sign Up");
-
   const user = new User();
 
   console.log(req.body);
-  const { email, password, repeatPassword } = req.body;
+  const { name, lastname, email, password, repeatPassword } = req.body;
+  user.name = name;
+  user.lastname = lastname;
   user.email = email;
   user.role = "admin";
   user.active = false;
@@ -25,9 +24,7 @@ function signUp(req, res) {
         if (err) {
           res.status(500).send({ message: "Error al encriptar la contraseña" });
         } else {
-          res.status(200).send({ message: hash });
           user.password = hash;
-
           user.save((err, userStored) => {
             if (err) {
               res.status(500).send({ message: "error del servidor" });
