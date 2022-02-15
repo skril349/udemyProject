@@ -110,6 +110,7 @@ function getUsersActive(req, res) {
 
 function uploadAvatar(req, res) {
   const params = req.params;
+
   User.findById({ _id: params.id }, (err, userData) => {
     if (err) {
       res.status(500).send({ message: "error en el servidor" });
@@ -128,7 +129,11 @@ function uploadAvatar(req, res) {
           console.log(extensionSplit);
           let fileExtension = extensionSplit[1];
 
-          if (fileExtension !== "png" && fileExtension !== "jpg") {
+          if (
+            fileExtension !== "png" &&
+            fileExtension !== "jpg" &&
+            fileExtension !== "jpeg"
+          ) {
             res.status(400).send({
               message:
                 "La extension de la imagen no es valida. (Extensiones permitidas: .png y .jpg",
@@ -169,9 +174,20 @@ function getAvatar(req, res) {
   });
 }
 
-function updateUser(req, res) {
-  const userData = req.body;
+async function updateUser(req, res) {
+  let userData = req.body;
+  userData.email = req.body.email.toLowerCase();
   const params = req.params;
+
+  if (userData.password) {
+    await bcrypt.hash(userData.password, null, null, (err, hash) => {
+      if (err) {
+        res.status(500).send({ message: "error al encriptar la contraseña" });
+      } else {
+        userData.password = hash;
+      }
+    });
+  }
   User.findByIdAndUpdate({ _id: params.id }, userData, (err, userUpdate) => {
     if (err) {
       res.status(500).send({ message: "Error del servidor" });
