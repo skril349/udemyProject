@@ -223,6 +223,59 @@ function activateUser(req, res) {
     }
   });
 }
+
+function deleteUser(req, res) {
+  console.log("delete-user");
+  const { id } = req.params;
+  User.findByIdAndRemove({ _id: id }, (err, userDeleted) => {
+    if (err) {
+      res.status(500).send({ message: "error en el servidor" });
+    } else {
+      if (!userDeleted) {
+        res
+          .status(404)
+          .send({ message: "no se puede eliminar un usuario que no existe" });
+      } else {
+        res.status(200).send({ message: "Usuario eliminado correctamente" });
+      }
+    }
+  });
+}
+
+function signUpAdmin(req, res) {
+  console.log("signUpAdmin");
+  const user = new User();
+  const { name, lastname, email, role, password } = req.body;
+  user.name = name;
+  user.lastname = lastname;
+  user.email = email.toLowerCase();
+  user.role = role;
+  user.active = true;
+  if (!password) {
+    res.status(500).send({ message: "La contraseña es obligatoria" });
+  } else {
+    bcrypt.hash(password, null, null, (err, hash) => {
+      if (err) {
+        res.status(500).send({ message: "error al encriptar la contraseña" });
+      } else {
+        user.password = hash;
+        user.save((err, userStored) => {
+          if (err) {
+            res.status(500).send({ message: "error guardar el usuario" });
+          } else {
+            if (!userStored) {
+              res
+                .status(404)
+                .send({ message: "error al crear el nuevo usuario" });
+            } else {
+              res.status(200).send({ message: "usuario creado correctamente" });
+            }
+          }
+        });
+      }
+    });
+  }
+}
 module.exports = {
   signUp,
   signIn,
@@ -232,4 +285,6 @@ module.exports = {
   getAvatar,
   updateUser,
   activateUser,
+  deleteUser,
+  signUpAdmin,
 };
