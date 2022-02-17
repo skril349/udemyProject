@@ -8,7 +8,7 @@ const { API_VERSION } = require("./config");
 //...
 const authRouters = require("./routers/auth");
 const userRouters = require("./routers/user");
-
+const menuRouters = require("./routers/menu");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -27,5 +27,5 @@ app.use((req, res, next) => {
 //...
 app.use(`/api/${API_VERSION}`, authRouters);
 app.use(`/api/${API_VERSION}`, userRouters);
-
+app.use(`/api/${API_VERSION}`, menuRouters);
 module.exports = app;
