@@ -12,5 +12,5 @@ api.put(
   MenuController.activateMenu
 );
 api.put("/update-menu/:id", [md_auth.ensureAuth], MenuController.updateMenu);
-
+api.delete("/delete-menu/:id", [md_auth.ensureAuth], MenuController.deleteMenu);
 module.exports = api;
