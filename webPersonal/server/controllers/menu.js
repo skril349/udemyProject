@@ -88,6 +88,7 @@ function deleteMenu(req, res) {
     }
   });
 }
+
 module.exports = {
   addMenu,
   getMenu,
