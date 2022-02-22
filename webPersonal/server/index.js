@@ -6,7 +6,9 @@ const { API_VERSION, IP_SERVER, PORT_DB } = require("./config");
 //mongoose.set("useFindAndModify",false);
 
 mongoose.connect(
-  `mongodb://${IP_SERVER}:${PORT_DB}/tonivivescabaleiro`,
+  //localhost
+  //`mongodb://${IP_SERVER}:${PORT_DB}/tonivivescabaleiro`,
+  `mongodb+srv://aabbcc:MERN1234@cluster0.oz8cs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {
