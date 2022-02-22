@@ -18,8 +18,7 @@ function addPost(req, res) {
         });
       } else {
         res.status(200).send({
-          message: "post creado correctamente",
-          status: 200,
+          message: { msg: "post creado correctamente", status: 200 },
         });
       }
     }
@@ -73,8 +72,10 @@ function updatePost(req, res) {
         });
       } else {
         res.status(200).send({
-          message: "se ha actualizado correctamente el post",
-          status: 200,
+          message: {
+            msg: "se ha actualizado correctamente el post",
+            status: 200,
+          },
         });
       }
     }
@@ -92,9 +93,9 @@ function deletePost(req, res) {
           .status(404)
           .send({ message: "no se ha encontrado el post", status: 404 });
       } else {
-        res
-          .status(200)
-          .send({ message: "post eliminado correctamente", status: 200 });
+        res.status(200).send({
+          message: { msg: "post eliminado correctamente", status: 200 },
+        });
       }
     }
   });
